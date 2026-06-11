@@ -33,15 +33,18 @@ class AsyncBrowserEngine:
     async def start(self):
         self.playwright = await async_playwright().start()
         self.browser = await self.playwright.chromium.launch(
-            headless=True,
-            args=[
-                "--disable-notifications",
-                "--mute-audio",
-                "--disable-infobars",
-                "--no-first-run",
-                "--no-default-browser-check",
-            ],
-        )
+    headless=True,
+    args=[
+        "--no-sandbox",                  # ⭐ مهم جدًا
+        "--disable-setuid-sandbox",      # ⭐ مهم جدًا
+        "--disable-dev-shm-usage",       # يحل مشاكل الذاكرة
+        "--disable-notifications",
+        "--mute-audio",
+        "--disable-infobars",
+        "--no-first-run",
+        "--no-default-browser-check",
+       ],
+      )
         self.context = await self.browser.new_context(
             viewport={"width": 1280, "height": 900},
             locale="en-US",
